@@ -3,7 +3,9 @@ import React, {
   useEffect,
   useMemo,
   useRef,
+  useState,
 } from "react";
+import { createPortal } from "react-dom";
 import {
   LightboxControls,
   LightboxLayoutType,
@@ -52,24 +54,30 @@ export function Lightbox(props: LightboxProps) {
   // Track whether onClose has already been fired for this mount.
   const didCloseRef = useRef(false);
 
+  // Track whether we're mounted (for SSR safety with portals)
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Set mounted state after initial render (for SSR safety)
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   // Handle body scroll locking while the lightbox is mounted.
+  // Note: We intentionally do NOT call onClose in the cleanup function.
+  // The parent component controls visibility via conditional rendering,
+  // so it already knows when the lightbox unmounts. Calling onClose during
+  // cleanup causes issues with React Strict Mode (double mount/unmount)
+  // and creates feedback loops where the cleanup triggers state changes
+  // that cause immediate re-unmounting.
   useEffect(() => {
     props.onOpen?.();
 
     if (props.disableScroll === false) {
-      return () => {
-        if (!didCloseRef.current) {
-          props.onClose?.();
-        }
-      };
+      return;
     }
 
     if (typeof document === "undefined") {
-      return () => {
-        if (!didCloseRef.current) {
-          props.onClose?.();
-        }
-      };
+      return;
     }
 
     const previousOverflow = document.body.style.overflow;
@@ -77,11 +85,8 @@ export function Lightbox(props: LightboxProps) {
 
     return () => {
       document.body.style.overflow = previousOverflow;
-      if (!didCloseRef.current) {
-        props.onClose?.();
-      }
     };
-  }, [props.disableScroll, props.onOpen, props.onClose]);
+  }, [props.disableScroll, props.onOpen]);
 
   const handleClose = useCallback(() => {
     if (didCloseRef.current) return;
@@ -179,7 +184,7 @@ export function Lightbox(props: LightboxProps) {
       break;
   }
 
-  return (
+  const lightboxContent = (
     <div className={styles.lightboxPortal} role="dialog" aria-modal="true">
       <LightboxOverlay
         onClose={handleClose}
@@ -188,4 +193,15 @@ export function Lightbox(props: LightboxProps) {
       {layoutComponent}
     </div>
   );
+
+  // Use a portal to render the lightbox at the document body level.
+  // This ensures the lightbox escapes any parent stacking contexts,
+  // overflow constraints, or CSS containment that could affect positioning.
+  // We only render the portal after mounting to ensure SSR compatibility.
+  if (isMounted && typeof document !== "undefined") {
+    return createPortal(lightboxContent, document.body);
+  }
+
+  // During SSR or before mount, render nothing to avoid hydration mismatches
+  return null;
 }
