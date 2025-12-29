@@ -17,6 +17,10 @@ import { LightboxOverlay } from "./LightboxOverlay";
 import { LightboxContent } from "./LightboxContent";
 import { LightboxChrome } from "./LightboxChrome";
 import { HorizontalLayout } from "./Layouts/HorizontalLayout";
+import { VerticalSplitLayout } from "./Layouts/VerticalSplitLayout";
+import { CustomSlideLayout } from "./Layouts/CustomSlideLayout";
+import { FullscreenLayout } from "./Layouts/FullscreenLayout";
+import { InlineLayout } from "./Layouts/InlineLayout";
 import styles from "../styles/Lightbox.module.css";
 
 /**
@@ -121,39 +125,67 @@ export function Lightbox(props: LightboxProps) {
     ...props.controls,
   };
 
+  const contentNode = (
+    <LightboxContent
+      item={currentItem}
+      layout={layout}
+      optixFlowConfig={props.optixFlowConfig}
+    />
+  );
+
+  const chromeNode = (
+    <LightboxChrome
+      currentIndex={gallery.currentIndex}
+      totalItems={items.length}
+      currentItem={currentItem}
+      canNext={gallery.canNext}
+      canPrev={gallery.canPrev}
+      controls={effectiveControls}
+      onNext={handleNext}
+      onPrev={handlePrev}
+      onClose={handleClose}
+    />
+  );
+
+  const layoutProps = {
+    content: contentNode,
+    chrome: chromeNode,
+    height: props.height,
+    maxWidth: props.maxWidth,
+    className: props.className,
+    style: props.style,
+  };
+
+  // For inline layout, we don't render the modal overlay or portal
+  if (layout === "inline") {
+    return <InlineLayout {...layoutProps} />;
+  }
+
+  // Render the appropriate layout component based on the layout type
+  let layoutComponent: React.ReactNode;
+  switch (layout) {
+    case "vertical-split":
+      layoutComponent = <VerticalSplitLayout {...layoutProps} />;
+      break;
+    case "custom-slide":
+      layoutComponent = <CustomSlideLayout {...layoutProps} />;
+      break;
+    case "fullscreen":
+      layoutComponent = <FullscreenLayout {...layoutProps} />;
+      break;
+    case "horizontal":
+    default:
+      layoutComponent = <HorizontalLayout {...layoutProps} />;
+      break;
+  }
+
   return (
     <div className={styles.lightboxPortal} role="dialog" aria-modal="true">
       <LightboxOverlay
         onClose={handleClose}
         closeOnBackdropClick={props.closeOnBackdropClick ?? true}
       />
-
-      <HorizontalLayout
-	        content={
-	          <LightboxContent
-	            item={currentItem}
-	            layout={layout}
-	            optixFlowConfig={props.optixFlowConfig}
-	          />
-	        }
-        chrome={
-          <LightboxChrome
-            currentIndex={gallery.currentIndex}
-            totalItems={items.length}
-            currentItem={currentItem}
-            canNext={gallery.canNext}
-            canPrev={gallery.canPrev}
-            controls={effectiveControls}
-            onNext={handleNext}
-            onPrev={handlePrev}
-            onClose={handleClose}
-          />
-        }
-        height={props.height}
-        maxWidth={props.maxWidth}
-        className={props.className}
-        style={props.style}
-      />
+      {layoutComponent}
     </div>
   );
 }

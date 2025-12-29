@@ -3,3 +3,7 @@ export { LightboxOverlay } from "./LightboxOverlay";
 export { LightboxContent } from "./LightboxContent";
 export { LightboxChrome } from "./LightboxChrome";
 export { HorizontalLayout } from "./Layouts/HorizontalLayout";
+export { VerticalSplitLayout } from "./Layouts/VerticalSplitLayout";
+export { CustomSlideLayout } from "./Layouts/CustomSlideLayout";
+export { FullscreenLayout } from "./Layouts/FullscreenLayout";
+export { InlineLayout } from "./Layouts/InlineLayout";
