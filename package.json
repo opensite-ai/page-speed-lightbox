@@ -1,6 +1,6 @@
 {
   "name": "@page-speed/lightbox",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "High-performance, feature-rich lightbox for OpenSite platform",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
@@ -34,9 +34,9 @@
   },
   "scripts": {
     "build": "tsc --emitDeclarationOnly && pnpm run build:esm && pnpm run build:cjs",
-    "build:esm": "esbuild src/index.ts src/core/index.ts src/hooks/index.ts src/renderers/index.ts src/components/index.ts --bundle --platform=browser --format=esm --outdir=dist --outbase=src",
-    "build:cjs": "esbuild src/index.ts --bundle --platform=browser --format=cjs --outfile=dist/index.cjs",
-    "bundle-analyze": "esbuild src/index.ts --bundle --analyze --outfile=/dev/null",
+    "build:esm": "esbuild src/index.ts src/core/index.ts src/hooks/index.ts src/renderers/index.ts src/components/index.ts --bundle --platform=browser --format=esm --outdir=dist --outbase=src --external:react --external:react-dom",
+    "build:cjs": "esbuild src/index.ts --bundle --platform=browser --format=cjs --outfile=dist/index.cjs --external:react --external:react-dom",
+    "bundle-analyze": "esbuild src/index.ts --bundle --analyze --outfile=/dev/null --external:react --external:react-dom",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
@@ -48,8 +48,8 @@
     "access": "public"
   },
   "peerDependencies": {
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
   },
   "keywords": [
     "lightbox",
