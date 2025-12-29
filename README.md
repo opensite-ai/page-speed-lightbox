@@ -2,7 +2,23 @@
 
 # @page-speed/lightbox
 
-High‑performance, media‑rich lightbox for React, designed for the DashTrack / OpenSite ecosystem and the Semantic Site Builder engine.
+High‑performance, media‑rich lightbox for React, professionally designed by the UI/UX team at [OpenSite](https://opensite.ai/) for their Semantic UI engine.
+
+
+## Page Speed Lightbox Showcase
+
+> Below you can see the wide range of layouts that are available automatically, enabling a modern UI experience for users. And since the component was specifically engineered for our Semantic UI engine, in addition to the default layout and style variants, the Lightbox components are also completely customizable.
+
+<p>
+  <br />
+  <div align="center">
+    <img src="https://github.com/user-attachments/assets/fe5c9392-5b8b-4e68-afe3-7dfccc5e657e" alt="ShadCN and Tailwind Lightbox Library" width="100%">
+  </div>
+  <br />
+</p>
+<br />
+<p></p>
+
 
 ## Overview
 
