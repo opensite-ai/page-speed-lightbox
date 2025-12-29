@@ -1,3 +1,4 @@
+import type { OptixFlowConfig as ImgOptixFlowConfig } from "@page-speed/img";
 export type LightboxLayoutType =
   | "horizontal"
   | "vertical-split"
@@ -22,6 +23,22 @@ export interface LightboxShare {
   title?: string;
 }
 
+	/**
+	 * OptixFlow configuration accepted by the lightbox.
+	 *
+	 * This mirrors the core OptixFlowConfig used across OpenSite UI blocks,
+	 * while adapting to the underlying @page-speed/img configuration
+	 * (which expects `compressionLevel`).
+	 */
+	export type LightboxOptixFlowConfig = ImgOptixFlowConfig & {
+	  /**
+	   * Convenience alias matching the common `compression` prop.
+	   * If provided, it will override `compressionLevel` when passed
+	   * through to the underlying <Img /> component.
+	   */
+	  compression?: number;
+	};
+	
 export interface LightboxItem {
   id: string;
   type: LightboxItemType;
@@ -62,6 +79,11 @@ export interface LightboxProps {
   className?: string;
   style?: React.CSSProperties;
   controls?: Partial<LightboxControls>;
+	  /**
+	   * OptixFlow image optimization configuration to pass through to
+	   * the underlying @page-speed/img <Img /> component.
+	   */
+	  optixFlowConfig?: LightboxOptixFlowConfig;
   onOpen?: () => void;
   onClose?: () => void;
   onSelect?: (index: number) => void;

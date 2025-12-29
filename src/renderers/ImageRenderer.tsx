@@ -1,29 +1,49 @@
 import React from "react";
-import { LightboxItem, LightboxLayoutType } from "../types";
+import { Img } from "@page-speed/img";
+import type {
+  LightboxItem,
+  LightboxLayoutType,
+  LightboxOptixFlowConfig,
+} from "../types";
+import type { OptixFlowConfig as ImgOptixFlowConfig } from "@page-speed/img";
 import styles from "../styles/Lightbox.module.css";
 
 interface ImageRendererProps {
-  item: LightboxItem;
-  layout: LightboxLayoutType;
-}
+	  item: LightboxItem;
+	  layout: LightboxLayoutType;
+	  optixFlowConfig?: LightboxOptixFlowConfig;
+	}
+
+const toImgOptixFlowConfig = (
+	  config?: LightboxOptixFlowConfig
+): ImgOptixFlowConfig | undefined => {
+	  if (!config) return undefined;
+	  const { compression, ...rest } = config;
+	  const base = rest as ImgOptixFlowConfig;
+	  return {
+	    ...base,
+	    compressionLevel:
+	      typeof compression === "number" ? compression : base.compressionLevel,
+	  };
+	};
 
 /**
- * Basic image renderer.
+ * Basic image renderer using @page-speed/img for optimized delivery.
  *
- * This intentionally uses a plain <img> tag so consuming apps can decide
- * whether to wrap or replace it with @opensite/img when used inside the
- * Semantic Site Builder.
+ * Consuming apps can still swap this out by providing a custom renderer
+ * via the Semantic Site Builder, but the default integrates the shared
+ * <Img /> component and OptixFlow configuration.
  */
-export function ImageRenderer({ item }: ImageRendererProps) {
+export function ImageRenderer({ item, optixFlowConfig }: ImageRendererProps) {
   if (!item.src) return null;
 
   return (
-    <img
-      className={styles.media}
-      src={item.src}
-      srcSet={item.srcSet}
-      alt={item.alt || item.title || ""}
-      loading="lazy"
-    />
+	    <Img
+	      className={styles.media}
+	      src={item.src}
+	      alt={item.alt || item.title || ""}
+	      loading="lazy"
+	      optixFlowConfig={toImgOptixFlowConfig(optixFlowConfig)}
+	    />
   );
 }

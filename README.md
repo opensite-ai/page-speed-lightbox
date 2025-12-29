@@ -1,3 +1,5 @@
+![Page Speed React Lightbox](https://octane.cdn.ing/api/v1/images/transform?url=https://cdn.ing/assets/i/r/286338/xmo09liynb5kdq8o8e0yk3j1kjgf/github.png&q=90)
+
 # @page-speed/lightbox
 
 High‑performance, media‑rich lightbox for React, designed for the DashTrack / OpenSite ecosystem and the Semantic Site Builder engine.

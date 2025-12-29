@@ -129,7 +129,13 @@ export function Lightbox(props: LightboxProps) {
       />
 
       <HorizontalLayout
-        content={<LightboxContent item={currentItem} layout={layout} />}
+	        content={
+	          <LightboxContent
+	            item={currentItem}
+	            layout={layout}
+	            optixFlowConfig={props.optixFlowConfig}
+	          />
+	        }
         chrome={
           <LightboxChrome
             currentIndex={gallery.currentIndex}

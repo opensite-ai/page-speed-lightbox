@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@page-speed/img':
+        specifier: ^0.4.3
+        version: 0.4.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@page-speed/pdf-viewer':
         specifier: ^0.0.2
         version: 0.0.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -545,6 +548,20 @@ packages:
 
   '@napi-rs/wasm-runtime@0.2.12':
     resolution: {integrity: sha512-ZVWUcfwY4E/yPitQJl481FjFo3K22D6qF0DuFH6Y/nbnE11GY5uguDxZMGXPQ8WQ0128MXQD7TnfHyK4oWoIJQ==}
+
+  '@page-speed/hooks@0.4.3':
+    resolution: {integrity: sha512-+G2WCUS/UHnzbs4aidK2yFrrMcTt0jWXyv1tNWzBnlfUbCn+tZantcMcQ4LWq5cO9nXKC6IwBnA8FF4ZKtUsNw==}
+    engines: {node: '>=18.0.0', pnpm: '>=9.0.0'}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+
+  '@page-speed/img@0.4.3':
+    resolution: {integrity: sha512-se/bbEQa7E3Vw11IoH+V2kB/FgUAYNf3mLFS79YtLWFPP35OaWQLKIK50rv2T/wYU/+YZXPmy+qxlUNImOcyEA==}
+    engines: {node: '>=18.0.0', pnpm: '>=9.0.0'}
+    peerDependencies:
+      react: '>=17.0.0'
+      react-dom: '>=17.0.0'
 
   '@page-speed/pdf-viewer@0.0.2':
     resolution: {integrity: sha512-tdNoZ5CxA2W7fSKWZWgHkARLahZP6WXNMmPLfNeQes+dFbMg3pbX+fDRd1RrBRvgnnDwI3bN+Xxp82CC95praQ==}
@@ -1895,6 +1912,9 @@ packages:
   walker@1.0.8:
     resolution: {integrity: sha512-ts/8E8l5b7kY0vlWLewOkDXMmPdLcVV4GmOQLyxuSswIJsweeFZtAsMF7k1Nszz+TYBQrlYRmzOnr398y1JemQ==}
 
+  web-vitals@5.1.0:
+    resolution: {integrity: sha512-ArI3kx5jI0atlTtmV0fWU3fjpLmq/nD3Zr1iFFlJLaqa5wLBkUSzINwBPySCX/8jRyjlmy1Volw1kz1g9XE4Jg==}
+
   webidl-conversions@3.0.1:
     resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
 
@@ -2552,6 +2572,18 @@ snapshots:
       '@emnapi/runtime': 1.7.1
       '@tybys/wasm-util': 0.10.1
     optional: true
+
+  '@page-speed/hooks@0.4.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      web-vitals: 5.1.0
+
+  '@page-speed/img@0.4.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@page-speed/hooks': 0.4.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
 
   '@page-speed/pdf-viewer@0.0.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
@@ -4089,6 +4121,8 @@ snapshots:
   walker@1.0.8:
     dependencies:
       makeerror: 1.0.12
+
+  web-vitals@5.1.0: {}
 
   webidl-conversions@3.0.1:
     optional: true
