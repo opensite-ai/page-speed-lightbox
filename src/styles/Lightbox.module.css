@@ -1,0 +1,114 @@
+.lightboxPortal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--lightbox-overlay, rgba(0, 0, 0, 0.85));
+}
+
+.horizontalLayoutRoot {
+  position: relative;
+  max-width: var(--lightbox-max-width, 90vw);
+  width: 100%;
+  padding: var(--lightbox-padding, 24px);
+  box-sizing: border-box;
+}
+
+.horizontalLayoutContainer {
+  position: relative;
+  background: var(--lightbox-modal-bg, #111);
+  color: var(--lightbox-text, #fff);
+  border-radius: var(--lightbox-radius, 12px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.mainContent {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--lightbox-content-bg, #000);
+}
+
+.toolbar {
+  border-top: 1px solid var(--lightbox-border, rgba(255, 255, 255, 0.1));
+}
+
+.media {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+}
+
+.chrome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--lightbox-toolbar, rgba(0, 0, 0, 0.5));
+}
+
+.chromeSection {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.navButton,
+.closeButton {
+  border: none;
+  border-radius: 999px;
+  padding: 6px 10px;
+  background: rgba(255, 255, 255, 0.08);
+  color: inherit;
+  cursor: pointer;
+}
+
+.navButton:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.counter {
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+.captionContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.captionTitle {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.captionText {
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+.pdfContainer {
+  width: 100%;
+  height: 80vh;
+  background: #111;
+}
+
+.pdfFallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: var(--lightbox-text-muted, rgba(255, 255, 255, 0.7));
+}

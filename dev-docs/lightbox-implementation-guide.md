@@ -156,7 +156,7 @@ export interface LightboxProps {
  controls?: Partial<LightboxControls>;
  onOpen?: () => void;
  onClose?: () => void;
- onSelect?: (index: number, item: LightboxItem) => void;
+ onSelect?: (index: number) => void;
  onNext?: () => void;
  onPrev?: () => void;
  enableDeepLinking?: boolean;

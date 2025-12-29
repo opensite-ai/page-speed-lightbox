@@ -33,14 +33,14 @@ describe("useGalleryState", () => {
       useGalleryState({ items, initialIndex: 0 })
     );
 
-    // ✅ currentItem provides full data without callback
-    expect(result.current.currentItem).toEqual(items);
+    // ✅ currentItem provides full data for the active item
+    expect(result.current.currentItem).toEqual(items[0]);
 
     act(() => {
       result.current.next();
     });
 
-    expect(result.current.currentItem).toEqual(items);
+    expect(result.current.currentItem).toEqual(items[1]);
   });
 });
 
@@ -62,7 +62,7 @@ describe("useLightbox", () => {
 
     // ✅ Initial state
     expect(result.current.isOpen).toBe(false);
-    expect(result.current.currentItem).toEqual(items);
+    expect(result.current.currentItem).toEqual(items[0]);
 
     // ✅ Open lightbox
     act(() => {
