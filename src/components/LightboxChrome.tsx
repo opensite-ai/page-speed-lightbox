@@ -202,13 +202,73 @@ export function LightboxChrome({
       const response = await fetch(currentItem.src);
       const blob = await response.blob();
 
+      // Determine file extension from Content-Type, URL, or item type
+      const getFileExtension = (): string => {
+        // Try to get extension from Content-Type header
+        const contentType = response.headers.get('Content-Type');
+        if (contentType) {
+          const mimeToExt: Record<string, string> = {
+            'application/pdf': '.pdf',
+            'image/jpeg': '.jpg',
+            'image/jpg': '.jpg',
+            'image/png': '.png',
+            'image/gif': '.gif',
+            'image/webp': '.webp',
+            'image/svg+xml': '.svg',
+            'video/mp4': '.mp4',
+            'video/webm': '.webm',
+            'video/quicktime': '.mov',
+          };
+          const baseMime = contentType.split(';')[0].trim().toLowerCase();
+          if (mimeToExt[baseMime]) {
+            return mimeToExt[baseMime];
+          }
+        }
+
+        // Try to extract extension from URL pathname
+        try {
+          const urlObj = new URL(currentItem.src!, window.location.origin);
+          const pathname = urlObj.pathname;
+          const lastDotIndex = pathname.lastIndexOf('.');
+          if (lastDotIndex > pathname.lastIndexOf('/')) {
+            const ext = pathname.substring(lastDotIndex).toLowerCase();
+            // Validate it's a reasonable extension (2-5 chars)
+            if (ext.length >= 2 && ext.length <= 6) {
+              return ext;
+            }
+          }
+        } catch {
+          // URL parsing failed
+        }
+
+        // Fall back to item type
+        const typeToExt: Record<string, string> = {
+          'pdf': '.pdf',
+          'image': '.jpg',
+          'video': '.mp4',
+        };
+        if (currentItem.type && typeToExt[currentItem.type]) {
+          return typeToExt[currentItem.type];
+        }
+
+        // Default extension
+        return '';
+      };
+
+      // Build filename with extension
+      const baseName = currentItem.title || 'download';
+      const extension = getFileExtension();
+      // Only add extension if the filename doesn't already have one
+      const hasExtension = baseName.includes('.') && baseName.lastIndexOf('.') > baseName.length - 6;
+      const filename = hasExtension ? baseName : `${baseName}${extension}`;
+
       // Create object URL
       const url = window.URL.createObjectURL(blob);
 
       // Create temporary link and trigger download
       const link = document.createElement('a');
       link.href = url;
-      link.download = currentItem.title || 'download';
+      link.download = filename;
 
       // Append to body, click, and remove
       document.body.appendChild(link);
