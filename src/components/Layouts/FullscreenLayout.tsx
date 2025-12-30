@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../../styles/Lightbox.module.css";
+import { cn } from "../../lib/utils";
 
 interface FullscreenLayoutProps {
   content: React.ReactNode;
@@ -21,15 +21,23 @@ export function FullscreenLayout({
   style,
 }: FullscreenLayoutProps) {
   return (
-    <div className={styles.fullscreenLayoutRoot} style={style}>
+    <div
+      className="fixed inset-0 z-50 flex flex-col"
+      style={style}
+    >
       <div
-        className={[
-          styles.fullscreenLayoutContainer,
-          className || "",
-        ].join(" ").trim()}
+        className={cn(
+          "relative flex-1 min-h-0",
+          "flex items-center justify-center",
+          className
+        )}
       >
-        <div className={styles.fullscreenContent}>{content}</div>
-        <div className={styles.fullscreenChrome}>{chrome}</div>
+        {/* Content area */}
+        <div className="w-full h-full flex items-center justify-center">
+          {content}
+        </div>
+        {/* Chrome (floating controls) */}
+        {chrome}
       </div>
     </div>
   );

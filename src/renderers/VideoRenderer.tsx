@@ -1,6 +1,5 @@
 import React from "react";
 import { LightboxItem, LightboxLayoutType } from "../types";
-import styles from "../styles/Lightbox.module.css";
 
 interface VideoRendererProps {
   item: LightboxItem;
@@ -18,7 +17,7 @@ export function VideoRenderer({ item }: VideoRendererProps) {
 
   return (
     <video
-      className={styles.media}
+      className="max-w-full max-h-full w-auto h-auto object-contain rounded-lg"
       src={item.src}
       controls
       playsInline

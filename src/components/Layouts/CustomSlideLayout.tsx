@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../../styles/Lightbox.module.css";
+import { cn } from "../../lib/utils";
 
 interface CustomSlideLayoutProps {
   content: React.ReactNode;
@@ -11,8 +11,9 @@ interface CustomSlideLayoutProps {
 }
 
 /**
- * Custom slide layout: optimized for component-type items where you want
- * full creative control over the slide content. Chrome is overlaid or minimal.
+ * Custom slide layout: optimized for PDF/slide presentations.
+ * Based on the design mockups showing a centered white card with
+ * rounded corners containing the slide content.
  */
 export function CustomSlideLayout({
   content,
@@ -29,15 +30,28 @@ export function CustomSlideLayout({
   };
 
   return (
-    <div className={styles.customSlideLayoutRoot} style={containerStyle}>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8 lg:p-12"
+      style={containerStyle}
+    >
       <div
-        className={[
-          styles.customSlideLayoutContainer,
-          className || "",
-        ].join(" ").trim()}
+        className={cn(
+          "relative flex flex-col items-center justify-center",
+          "w-full max-w-5xl max-h-full",
+          className
+        )}
       >
-        <div className={styles.customSlideContent}>{content}</div>
-        <div className={styles.customSlideChrome}>{chrome}</div>
+        {/* Slide content area */}
+        <div className={cn(
+          "relative w-full",
+          "flex items-center justify-center",
+          "overflow-hidden rounded-2xl",
+          "bg-white shadow-2xl"
+        )}>
+          {content}
+        </div>
+        {/* Chrome (floating controls) */}
+        {chrome}
       </div>
     </div>
   );
