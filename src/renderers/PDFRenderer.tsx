@@ -29,11 +29,20 @@ interface PDFRendererProps {
  * Thin wrapper around @page-speed/pdf-viewer, loaded lazily so that the
  * heavy PDF runtime is only fetched when a PDF item is actually viewed.
  */
-export function PDFRenderer({ item }: PDFRendererProps) {
+export function PDFRenderer({ item, layout }: PDFRendererProps) {
   if (!item.src) return null;
 
+  // Configure PDF viewer based on layout
+  const config = {
+    showControls: true,
+    enableDownload: true,
+    enablePrint: true,
+    enableFullscreen: true,
+    initialZoom: layout === 'inline' ? 'page-width' as const : 1.5,
+  };
+
   return (
-    <div className="w-full h-full flex items-center justify-center p-4">
+    <div className="w-full h-full flex items-center justify-center">
       <Suspense
         fallback={
           <div className="flex items-center justify-center text-neutral-500 text-sm">
@@ -41,7 +50,13 @@ export function PDFRenderer({ item }: PDFRendererProps) {
           </div>
         }
       >
-        <AnyPDFViewer url={item.src} />
+        <AnyPDFViewer
+          url={item.src}
+          config={config}
+          height="100%"
+          width="100%"
+          title={item.title}
+        />
       </Suspense>
     </div>
   );

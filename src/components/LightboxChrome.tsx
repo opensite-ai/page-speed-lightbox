@@ -130,6 +130,99 @@ export function LightboxChrome({
   variant = "floating",
 }: LightboxChromeProps) {
   const resolved = mergeControls(controls);
+  const [isFullscreen, setIsFullscreen] = React.useState(false);
+
+  // Handle fullscreen
+  const handleFullscreen = React.useCallback(() => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().then(() => {
+        setIsFullscreen(true);
+      }).catch((err) => {
+        console.error('Failed to enter fullscreen:', err);
+      });
+    } else {
+      document.exitFullscreen().then(() => {
+        setIsFullscreen(false);
+      }).catch((err) => {
+        console.error('Failed to exit fullscreen:', err);
+      });
+    }
+  }, []);
+
+  // Listen for fullscreen changes
+  React.useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    };
+  }, []);
+
+  // Handle share
+  const handleShare = React.useCallback(async () => {
+    if (!currentItem) return;
+
+    const shareData = {
+      title: currentItem.title || 'Shared item',
+      text: currentItem.caption || '',
+      url: window.location.href,
+    };
+
+    // Try native Web Share API first
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        // User cancelled or error occurred
+        if (err instanceof Error && err.name !== 'AbortError') {
+          console.error('Error sharing:', err);
+        }
+      }
+    } else {
+      // Fallback: copy URL to clipboard
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        // Could show a toast notification here
+        console.log('Link copied to clipboard');
+      } catch (err) {
+        console.error('Failed to copy to clipboard:', err);
+      }
+    }
+  }, [currentItem]);
+
+  // Handle download
+  const handleDownload = React.useCallback(async () => {
+    if (!currentItem?.src) return;
+
+    try {
+      // Fetch the resource
+      const response = await fetch(currentItem.src);
+      const blob = await response.blob();
+
+      // Create object URL
+      const url = window.URL.createObjectURL(blob);
+
+      // Create temporary link and trigger download
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = currentItem.title || 'download';
+
+      // Append to body, click, and remove
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      // Clean up object URL
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Download failed:', err);
+      // Fallback: open in new tab
+      window.open(currentItem.src, '_blank');
+    }
+  }, [currentItem]);
 
   if (variant === "toolbar") {
     return (
@@ -165,6 +258,21 @@ export function LightboxChrome({
         </div>
 
         <div className="flex items-center gap-2">
+          {resolved.share && 'share' in navigator && (
+            <IconButton onClick={handleShare} ariaLabel="Share">
+              <ShareIcon />
+            </IconButton>
+          )}
+          {resolved.fullscreen && (
+            <IconButton onClick={handleFullscreen} ariaLabel={isFullscreen ? "Exit fullscreen" : "Fullscreen"}>
+              <FullscreenIcon />
+            </IconButton>
+          )}
+          {resolved.download && currentItem?.src && (
+            <IconButton onClick={handleDownload} ariaLabel="Download">
+              <DownloadIcon />
+            </IconButton>
+          )}
           {resolved.counter && totalItems > 0 && (
             <span className="text-xs text-white/70">
               {currentIndex + 1} / {totalItems}
@@ -188,18 +296,18 @@ export function LightboxChrome({
         "flex items-center gap-2",
         className
       )}>
-        {resolved.share && (
-          <IconButton ariaLabel="Share">
+        {resolved.share && 'share' in navigator && (
+          <IconButton onClick={handleShare} ariaLabel="Share">
             <ShareIcon />
           </IconButton>
         )}
         {resolved.fullscreen && (
-          <IconButton ariaLabel="Fullscreen">
+          <IconButton onClick={handleFullscreen} ariaLabel={isFullscreen ? "Exit fullscreen" : "Fullscreen"}>
             <FullscreenIcon />
           </IconButton>
         )}
-        {resolved.download && (
-          <IconButton ariaLabel="Download">
+        {resolved.download && currentItem?.src && (
+          <IconButton onClick={handleDownload} ariaLabel="Download">
             <DownloadIcon />
           </IconButton>
         )}
