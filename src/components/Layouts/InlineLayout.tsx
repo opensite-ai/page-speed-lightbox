@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../../styles/Lightbox.module.css";
+import { cn } from "../../lib/utils";
 
 interface InlineLayoutProps {
   content: React.ReactNode;
@@ -29,15 +29,27 @@ export function InlineLayout({
   };
 
   return (
-    <div className={styles.inlineLayoutRoot} style={containerStyle}>
-      <div
-        className={[
-          styles.inlineLayoutContainer,
-          className || "",
-        ].join(" ").trim()}
-      >
-        <div className={styles.inlineContent}>{content}</div>
-        <div className={styles.inlineToolbar}>{chrome}</div>
+    <div
+      className={cn(
+        "relative w-full",
+        "overflow-hidden rounded-xl",
+        "bg-neutral-100",
+        className
+      )}
+      style={containerStyle}
+    >
+      {/* Content area */}
+      <div className="relative w-full">
+        {content}
+      </div>
+      {/* Toolbar */}
+      <div className={cn(
+        "flex items-center justify-between",
+        "px-3 py-2",
+        "bg-neutral-900/90 text-white",
+        "border-t border-white/10"
+      )}>
+        {chrome}
       </div>
     </div>
   );

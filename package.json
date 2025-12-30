@@ -80,6 +80,8 @@
   },
   "dependencies": {
     "@page-speed/img": "^0.4.3",
-    "@page-speed/pdf-viewer": "0.1.1"
+    "@page-speed/pdf-viewer": "0.1.1",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.4.0"
   }
 }

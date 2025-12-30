@@ -1,6 +1,5 @@
 import React, { Suspense } from "react";
 import { LightboxItem, LightboxLayoutType } from "../types";
-import styles from "../styles/Lightbox.module.css";
 
 // The PDF viewer package currently ships JavaScript only. To keep this
 // package strictly typed without blocking on external typings, we treat the
@@ -34,13 +33,15 @@ export function PDFRenderer({ item }: PDFRendererProps) {
   if (!item.src) return null;
 
   return (
-    <div className={styles.pdfContainer}>
+    <div className="w-full h-full flex items-center justify-center p-4">
       <Suspense
         fallback={
-          <div className={styles.pdfFallback}>Loading document...</div>
+          <div className="flex items-center justify-center text-neutral-500 text-sm">
+            Loading document...
+          </div>
         }
       >
-	        <AnyPDFViewer url={item.src} />
+        <AnyPDFViewer url={item.src} />
       </Suspense>
     </div>
   );

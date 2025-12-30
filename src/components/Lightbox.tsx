@@ -23,7 +23,6 @@ import { VerticalSplitLayout } from "./Layouts/VerticalSplitLayout";
 import { CustomSlideLayout } from "./Layouts/CustomSlideLayout";
 import { FullscreenLayout } from "./Layouts/FullscreenLayout";
 import { InlineLayout } from "./Layouts/InlineLayout";
-import styles from "../styles/Lightbox.module.css";
 
 /**
  * Main Lightbox component.
@@ -185,7 +184,7 @@ export function Lightbox(props: LightboxProps) {
   }
 
   const lightboxContent = (
-    <div className={styles.lightboxPortal} role="dialog" aria-modal="true">
+    <div className="fixed inset-0 z-50" role="dialog" aria-modal="true">
       <LightboxOverlay
         onClose={handleClose}
         closeOnBackdropClick={props.closeOnBackdropClick ?? true}

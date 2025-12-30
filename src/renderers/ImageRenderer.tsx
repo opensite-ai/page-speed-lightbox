@@ -6,26 +6,25 @@ import type {
   LightboxOptixFlowConfig,
 } from "../types";
 import type { OptixFlowConfig as ImgOptixFlowConfig } from "@page-speed/img";
-import styles from "../styles/Lightbox.module.css";
 
 interface ImageRendererProps {
-	  item: LightboxItem;
-	  layout: LightboxLayoutType;
-	  optixFlowConfig?: LightboxOptixFlowConfig;
-	}
+  item: LightboxItem;
+  layout: LightboxLayoutType;
+  optixFlowConfig?: LightboxOptixFlowConfig;
+}
 
 const toImgOptixFlowConfig = (
-	  config?: LightboxOptixFlowConfig
+  config?: LightboxOptixFlowConfig
 ): ImgOptixFlowConfig | undefined => {
-	  if (!config) return undefined;
-	  const { compression, ...rest } = config;
-	  const base = rest as ImgOptixFlowConfig;
-	  return {
-	    ...base,
-	    compressionLevel:
-	      typeof compression === "number" ? compression : base.compressionLevel,
-	  };
-	};
+  if (!config) return undefined;
+  const { compression, ...rest } = config;
+  const base = rest as ImgOptixFlowConfig;
+  return {
+    ...base,
+    compressionLevel:
+      typeof compression === "number" ? compression : base.compressionLevel,
+  };
+};
 
 /**
  * Basic image renderer using @page-speed/img for optimized delivery.
@@ -38,12 +37,12 @@ export function ImageRenderer({ item, optixFlowConfig }: ImageRendererProps) {
   if (!item.src) return null;
 
   return (
-	    <Img
-	      className={styles.media}
-	      src={item.src}
-	      alt={item.alt || item.title || ""}
-	      loading="lazy"
-	      optixFlowConfig={toImgOptixFlowConfig(optixFlowConfig)}
-	    />
+    <Img
+      className="max-w-full max-h-full w-auto h-auto object-contain"
+      src={item.src}
+      alt={item.alt || item.title || ""}
+      loading="lazy"
+      optixFlowConfig={toImgOptixFlowConfig(optixFlowConfig)}
+    />
   );
 }
