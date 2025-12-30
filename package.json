@@ -1,6 +1,6 @@
 {
   "name": "@page-speed/lightbox",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "description": "High-performance, feature-rich lightbox for OpenSite platform",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
@@ -80,7 +80,7 @@
   },
   "dependencies": {
     "@page-speed/img": "^0.4.3",
-    "@page-speed/pdf-viewer": "0.1.7",
+    "@page-speed/pdf-viewer": "0.1.8",
     "clsx": "^2.1.1",
     "tailwind-merge": "^3.4.0"
   }

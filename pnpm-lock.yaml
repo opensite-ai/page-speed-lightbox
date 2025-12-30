@@ -12,8 +12,8 @@ importers:
         specifier: ^0.4.3
         version: 0.4.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@page-speed/pdf-viewer':
-        specifier: 0.1.7
-        version: 0.1.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 0.1.8
+        version: 0.1.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -569,8 +569,8 @@ packages:
       react: '>=17.0.0'
       react-dom: '>=17.0.0'
 
-  '@page-speed/pdf-viewer@0.1.7':
-    resolution: {integrity: sha512-XcpBqAhOZ7oGGLhINRMcmR4T8UeZ0n1YQ/l7EB3LhAHCffPg8csOUSl1YPM4cut/A6StJ+MI0N+uP9XvwxfVcg==}
+  '@page-speed/pdf-viewer@0.1.8':
+    resolution: {integrity: sha512-tzYwAtuoW+dLt7YEjNUg5sUeGi0lP0WBI0kt/xSglVK39/zRTqKtu2/X4NK39UmDJ6Y81EoyZ09Zn1d8VmK6xA==}
     peerDependencies:
       react: ^18.0.0
       react-dom: ^18.0.0
@@ -2598,7 +2598,7 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@page-speed/pdf-viewer@0.1.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@page-speed/pdf-viewer@0.1.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       pdfjs-dist: 3.11.174
       react: 18.3.1
