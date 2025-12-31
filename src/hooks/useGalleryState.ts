@@ -15,6 +15,8 @@ export function useGalleryState({
   );
 
   const currentItem = items[currentIndex] ?? null;
+  const prevItem = currentIndex > 0 ? items[currentIndex - 1] : null;
+  const nextItem = currentIndex < items.length - 1 ? items[currentIndex + 1] : null;
 
   const goToIndex = useCallback(
     (index: number) => {
@@ -34,8 +36,11 @@ export function useGalleryState({
   }, [currentIndex, goToIndex]);
 
   return {
+    items,
     currentIndex,
     currentItem,
+    prevItem,
+    nextItem,
     goToIndex,
     next,
     prev,
