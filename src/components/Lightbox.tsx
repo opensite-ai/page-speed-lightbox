@@ -12,14 +12,18 @@ import {
   LightboxProps,
   LightboxItem,
 } from "../types";
+import { cn } from "../lib/utils";
 import { useGalleryState } from "../hooks/useGalleryState";
 import { useKeyboardShortcuts } from "../hooks/useKeyboardShortcuts";
 import { useResponsiveness } from "../hooks/useResponsiveness";
 import { LightboxOverlay } from "./LightboxOverlay";
 import { LightboxContent } from "./LightboxContent";
 import { LightboxChrome } from "./LightboxChrome";
+import { LightboxThumbnails } from "./LightboxThumbnails";
 import { HorizontalLayout } from "./Layouts/HorizontalLayout";
+import { HorizontalShowcaseLayout } from "./Layouts/HorizontalShowcaseLayout";
 import { VerticalSplitLayout } from "./Layouts/VerticalSplitLayout";
+import { VerticalPeekLayout } from "./Layouts/VerticalPeekLayout";
 import { CustomSlideLayout } from "./Layouts/CustomSlideLayout";
 import { FullscreenLayout } from "./Layouts/FullscreenLayout";
 import { InlineLayout } from "./Layouts/InlineLayout";
@@ -148,15 +152,45 @@ export function Lightbox(props: LightboxProps) {
       onNext={handleNext}
       onPrev={handlePrev}
       onClose={handleClose}
+      variant={props.chromeVariant}
     />
   );
+
+  const thumbnailsNode = effectiveControls.thumbnails ? (
+    <LightboxThumbnails
+      items={gallery.items}
+      currentIndex={gallery.currentIndex}
+      onSelect={gallery.goToIndex}
+      config={props.thumbnails}
+    />
+  ) : null;
+
+  const prevContentNode = gallery.prevItem ? (
+    <LightboxContent
+      item={gallery.prevItem}
+      layout={layout}
+      optixFlowConfig={props.optixFlowConfig}
+    />
+  ) : null;
+
+  const nextContentNode = gallery.nextItem ? (
+    <LightboxContent
+      item={gallery.nextItem}
+      layout={layout}
+      optixFlowConfig={props.optixFlowConfig}
+    />
+  ) : null;
+
+  const animationClass = props.enableAnimations !== false
+    ? "transition-opacity duration-300 motion-reduce:transition-none"
+    : "";
 
   const layoutProps = {
     content: contentNode,
     chrome: chromeNode,
     height: props.height,
     maxWidth: props.maxWidth,
-    className: props.className,
+    className: cn(props.className, animationClass),
     style: props.style,
   };
 
@@ -169,7 +203,35 @@ export function Lightbox(props: LightboxProps) {
   let layoutComponent: React.ReactNode;
   switch (layout) {
     case "vertical-split":
-      layoutComponent = <VerticalSplitLayout {...layoutProps} />;
+      layoutComponent = (
+        <VerticalSplitLayout
+          {...layoutProps}
+          sidebar={props.sidebar}
+        />
+      );
+      break;
+    case "vertical-peek":
+      layoutComponent = (
+        <VerticalPeekLayout
+          {...layoutProps}
+          prevContent={prevContentNode}
+          nextContent={nextContentNode}
+          footer={props.footer}
+          onPrev={handlePrev}
+          onNext={handleNext}
+          canPrev={gallery.canPrev}
+          canNext={gallery.canNext}
+        />
+      );
+      break;
+    case "horizontal-showcase":
+      layoutComponent = (
+        <HorizontalShowcaseLayout
+          {...layoutProps}
+          footer={props.footer}
+          thumbnails={thumbnailsNode}
+        />
+      );
       break;
     case "custom-slide":
       layoutComponent = <CustomSlideLayout {...layoutProps} />;

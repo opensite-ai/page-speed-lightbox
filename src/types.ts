@@ -1,10 +1,18 @@
 import type { OptixFlowConfig as ImgOptixFlowConfig } from "@page-speed/img";
 export type LightboxLayoutType =
   | "horizontal"
+  | "horizontal-showcase"
   | "vertical-split"
+  | "vertical-peek"
   | "custom-slide"
   | "fullscreen"
   | "inline";
+
+export type LightboxChromeVariant = "toolbar" | "floating";
+
+export type LightboxThumbnailsPosition = "bottom" | "sidebar" | "none";
+
+export type LightboxThumbnailsVariant = "strip" | "grid";
 
 export type LightboxItemType = "image" | "video" | "pdf" | "component";
 
@@ -70,6 +78,13 @@ export interface LightboxControls {
   closeButton?: boolean;
 }
 
+export interface LightboxThumbnailsConfig {
+  position?: LightboxThumbnailsPosition;
+  variant?: LightboxThumbnailsVariant;
+  size?: "sm" | "md" | "lg";
+  showOnMobile?: boolean;
+}
+
 export interface LightboxProps {
   items: LightboxItem[];
   initialIndex?: number;
@@ -79,11 +94,35 @@ export interface LightboxProps {
   className?: string;
   style?: React.CSSProperties;
   controls?: Partial<LightboxControls>;
-	  /**
-	   * OptixFlow image optimization configuration to pass through to
-	   * the underlying @page-speed/img <Img /> component.
-	   */
-	  optixFlowConfig?: LightboxOptixFlowConfig;
+  /**
+   * OptixFlow image optimization configuration to pass through to
+   * the underlying @page-speed/img <Img /> component.
+   */
+  optixFlowConfig?: LightboxOptixFlowConfig;
+  /**
+   * Custom sidebar content for vertical-split layout.
+   * Renders in the right sidebar area alongside the main content.
+   */
+  sidebar?: React.ReactNode;
+  /**
+   * Custom footer content for layouts that support it.
+   * Renders below the main content area (e.g., info cards, metadata).
+   */
+  footer?: React.ReactNode;
+  /**
+   * Chrome UI variant: "toolbar" for traditional bottom bar,
+   * "floating" for floating buttons around the viewport.
+   */
+  chromeVariant?: LightboxChromeVariant;
+  /**
+   * Thumbnails configuration for gallery navigation.
+   */
+  thumbnails?: LightboxThumbnailsConfig;
+  /**
+   * Enable smooth CSS animations for slide transitions.
+   * Respects prefers-reduced-motion automatically.
+   */
+  enableAnimations?: boolean;
   onOpen?: () => void;
   onClose?: () => void;
   onSelect?: (index: number) => void;
